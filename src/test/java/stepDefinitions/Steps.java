@@ -4,6 +4,7 @@ import cucumber.api.java.en.*;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import pageObjects.AmazonPage;
 import pageObjects.LoginPage;
 import pageObjects.MainPage;
 import pageObjects.WindowsPage;
@@ -16,13 +17,17 @@ public class Steps {
     public LoginPage loginPage;
     public MainPage mainPage;
     public WindowsPage windowsPage;
+    public AmazonPage amazonPage;
 
     @Given("User launch chrome browser")
     public void user_launch_chrome_browser(){
-        System.setProperty("webdriver.chrome.driver","C:\\Users\\Crimelok\\IdeaProjects\\InterviewFramework\\Drivers\\chromedriver.exe");
+   //     System.setProperty("webdriver.chrome.driver","C:\\Users\\Crimelok\\IdeaProjects\\InterviewFramework\\Drivers\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver","C:\\Users\\Crimelok\\IdeaProjects\\JavaSeleniumFramework\\Drivers\\chromedriver.exe");
         driver = new ChromeDriver();
         mainPage=new MainPage(driver);
         windowsPage=new WindowsPage(driver);
+        amazonPage = new AmazonPage(driver);
+        driver.manage().window().maximize();
     }
 
     @When("User opens URL {string}")
@@ -99,6 +104,39 @@ public class Steps {
     @When("User makes paying flow")
     public void user_makes_paying_flow() throws InterruptedException, ParseException {
         windowsPage.payingFlow();
+    }
+
+
+
+
+    @When("User search for amazon product {string}")
+    public void user_search_for_amazon_product(String product) throws InterruptedException, ParseException {
+        amazonPage.searchItem(product);
+    }
+
+    @When("User verifies item is displayed on the results page and stores price")
+    public void user_verifies_item_and_stores_price() throws Exception {
+        amazonPage.storeFirstPrice();
+    }
+
+    @When("User clicks on the first result")
+    public void user_clicks_on_the_first_result() throws Exception {
+        amazonPage.clickFirstResult();
+    }
+
+    @When("User validates same prices")
+    public void user_validates_same_prices() throws Exception {
+        amazonPage.validateAamazonResults();
+    }
+
+    @When("User does the cart flow")
+    public void user_does_cart_flow() throws Exception {
+        amazonPage.cartFlow();
+    }
+
+    @When("User deletes product from cart")
+    public void user_deletes_product_from_cart() throws Exception {
+        amazonPage.deleteProduct();
     }
 
 }
